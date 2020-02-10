@@ -155,7 +155,7 @@ def greet():
     name = input("Hi welcome, what is your name?")
     return name
 
-def doYouWantToPlay:
+def doYouWantToPlay():
     answer = input("I've provided you with a balance of 100 dollars, would you like to play a game? Y or N?")
 
 
