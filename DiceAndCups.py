@@ -2,7 +2,7 @@
 # 02/09/20
 # Dice and Cups
 # "I have not given or received any unauthorized assistance on the assignment
-# Link here: https://youtu.be/4-csfWaLFWo
+# Link here: https://youtu.be/7rc21vwnZYw
 
 from random import randint
 
@@ -11,7 +11,7 @@ class SixSidedDie():
     Class for a six sided die
     """
 
-    def __init__(self): #Initializer sets
+    def __init__(self): #Initializer
         self.n = 6
         self.faceValue = None
 
@@ -35,7 +35,7 @@ class SixSidedDie():
         Prints a six sided die object
         :return:
         """
-        return "{n:" + self.n+ ", faceValue:,"+ self.faceValue + "}"
+        return "{n:" + self.n+ ", faceValue:"+ self.faceValue + "}"
 
 
 class TenSidedDie(SixSidedDie):
@@ -107,15 +107,18 @@ class Cup():
         Prints a cup object elegantly in a string
         :return: String
         """
-        return "Cup(SixSidedDie({}), TenSidedDie({}), TwentySidedDie({})".format(len(self.diceDict["six"]), len(self.diceDict["ten"]), len(self.diceDict["twenty"]))
-
-
+        return "Cup(SixSidedDie({}), TenSidedDie({}), TwentySidedDie({})"\
+            .format(len(self.diceDict["six"]),
+                    len(self.diceDict["ten"]),
+                    len(self.diceDict["twenty"]))
 
 def main():
     cup = Cup(4, 2, 3)
     print(cup)
     cup.roll()
-    print(cup.getAllFaceValues())
+    d= TwentySidedDie()
+    print(d.roll)
+    print(d.getFaceValue())
 
 if __name__ == '__main__':
     main()

@@ -2,7 +2,7 @@
 # 02/09/20
 # Dice and Cups
 # "I have not given or received any unauthorized assistance on the assignment
-# Link here: https://youtu.be/4-csfWaLFWo
+# Link here: https://youtu.be/nYY9GrAjXgc
 
 from random import randint
 
@@ -52,6 +52,63 @@ class TwentySidedDie(SixSidedDie):
     def __init__(self):
         self.n = 20
 
+class Cup():
+    """
+    Class representing a cup holding dice
+    """
+    def __init__(self, sixDie, tenDie, twentyDie):
+        """
+        Initializes a cup containing a amount of six, ten, and twenty sided dice
+        :param sixDie: int
+        :param tenDie: int
+        :param twentyDie: int
+        """
+        self.diceDict = {} #dictionary of list of dice dice
+        self.sixDieList = []
+        self.tenDieList = []
+        self.twentyDieList = []
+        self.diceDict["six"] = self.sixDieList
+        self.diceDict["ten"] = self.tenDieList
+        self.diceDict["twenty"] = self.twentyDieList
+        for i in range(0, sixDie): #add six sided dice to six list in dice dictionary
+            self.diceDict["six"].append(SixSidedDie())
+        for i in range(0, tenDie): #add ten sided dice to ten list in dice dictionary
+            self.diceDict["ten"].append(TenSidedDie())
+        for i in range(0, twentyDie): #add twenty sided dice to twenty list in dice dictionary
+            self.diceDict["twenty"].append(TwentySidedDie())
+
+    def getSum(self):
+        """
+        Calculates the sum of the dices face value in the cup
+        :return: int
+        """
+        total = 0
+
+        for diceList in self.diceDict.values():
+            for dice in diceList:
+                total = total + dice.getFaceValue()
+
+        return total
+
+    def roll(self):
+        """
+        Rolls all the dice in the cup
+        :return: None
+        """
+        for diceList in self.diceDict.values():
+            for dice in diceList:
+                dice.roll()
+        print(self.getSum())
+
+    def __repr__(self):
+        """
+        Prints a cup object elegantly in a string
+        :return: String
+        """
+        return "Cup(SixSidedDie({}), TenSidedDie({}), TwentySidedDie({})"\
+            .format(len(self.diceDict["six"]),
+                    len(self.diceDict["ten"]),
+                    len(self.diceDict["twenty"]))
 
 class DiceGame():
 
@@ -156,6 +213,7 @@ class DiceGame():
         """
         print("---SHAKE SHAKE AND ROLL---\n")
         self.cup.roll()
+        print("Goal is: {}".format(self.balance)) #added after video
         self.__payout(self.cup.getSum())
         self.printBalance()
 
