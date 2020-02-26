@@ -7,40 +7,53 @@
 from time import time_ns
 from statistics import mean
 
+
 class WarAndPeacePseudoRandomNumberGenerator():
+    filepath = "resources/war-and-peace.txt"
 
     def __init__(self, seedValue=None):
 
         self.seedValue = seedValue
+        self.file = self.openFile()
 
     def getSeedValue(self):
-
+        """
+        Returns the seed value of the class, if there is none returns last 5 digits of time
+        :return:
+        """
         if self.seedValue is None:
             x = time_ns()
             sax = str(x)
-            x = int(sax[-5:])
+            x = int(sax[-5:])  # last 5 digits
 
             return self.doSomeLCGMath(x)
 
         return self.doSomeLCGMath(self.seedValue)
 
     def doSomeLCGMath(self, seed):
-
+        """
+        Uses a value to calculate a number
+        Numbers range from 0 to 999999
+        :param seed:
+        :return: int
+        """
         a = 1
         c = 3123
         m = 999999
-        return (a*seed + c) % m
+        return (a * seed + c) % m
 
     def random(self):
+        """
+        Calculate a random number using the text file
+        :return:
+        """
         value = self.getSeedValue()
         binaryString = ""
 
-        file = self.openFile()
-
         while len(binaryString) < 16:
-            a = self.getCharacter(file, value)
+            a = self.getCharacter(value)
             i = value + self.getSeedValue()
-            b = self.getCharacter(file, i)
+            b = self.getCharacter(i)
             bit = self.judge(a, b)
             if bit is None:
                 value = value + self.getSeedValue()
@@ -48,63 +61,71 @@ class WarAndPeacePseudoRandomNumberGenerator():
             value = value + self.getSeedValue()
             binaryString += bit
 
-        self.closeFile(file)
-
         return self.calculateNumber(binaryString)
 
     def calculateNumber(self, bitString):
+        """
+        Take a String of 0s and 1s and convert that to a number where 0<=number<1
+        :param bitString:
+        :return:
+        """
 
         sum = 0.0
 
         divisor = 2
 
-        for i in range(len(bitString)): #expect bit string to be len of 16 and made up of 0 and 1 only
-            sum += int(bitString[i]) * (1/(divisor))
+        for i in range(len(bitString)):  # expect bit string to be len of 16 and made up of 0 and 1 only
+            sum += int(bitString[i]) * (1 / (divisor))
             divisor = divisor * 2
         return sum
 
-
     def judge(self, a, b):
-        if a>b:
+        """
+        Return a 0 or 1
+        :param a: char
+        :param b: char
+        :return: String
+        """
+        if a > b:
             return "1"
-        if a<b:
+        if a < b:
             return "0"
         else:
             return None
 
-
-    def getLines(self):
-        filepath = "resources/war-and-peace.txt"
-        fileString = ""
-        with open(filepath, "r") as file:
-            lines = file.readlines()
-        for line in lines:
-            fileString += line.rstrip()
-        fileString = fileString.replace(" ", "")
-        # print(fileString)
-        return fileString
-
-    def getCharacter(self, file, value):
+    def getCharacter(self, value):
+        """
+        Get a character from a file
+        :param value: int
+        :return: char
+        """
         a = " "
         b = None
 
-        while a.isspace():
-            file.seek(value)
-            a = file.read(1)
-            value += 1
+        while a.isspace():  # avoid returning whitespace
+            self.file.seek(value)
+            a = self.file.read(1)
+            value += 1  # increment value by 1
             try:
                 b = a.decode("ascii")
-            except UnicodeError:
+            except UnicodeError:  # if not an ascii continue loop
                 a = " "
 
         return b
 
     def openFile(self):
-        filepath = "resources/war-and-peace.txt"
-        return open(filepath, "rb")
+        """
+        Open file
+        :return: File
+        """
+        return open(self.filepath, "rb")
 
-    def closeFile(self, fileObject):
-        fileObject.close()
+    def closeFile(self):
+        """
+        Close file
+        :return: None
+        """
+        self.file.close()
 
 
 
@@ -117,14 +138,13 @@ def main():
     prng2 = WarAndPeacePseudoRandomNumberGenerator(1234)
     a = prng2.random()
     b = prng2.random()
-
-    # c = prng2.getCharacter(1234)
-    # print(c)
+    prng2.closeFile()
 
     for i in range(10000):
         r = prng.random()
         list1.append(r)
 
+    prng.closeFile()
     median = mean(list1)
     minimum = min(list1)
     maximum = max(list1)
