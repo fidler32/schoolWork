@@ -4,16 +4,14 @@
 # "I have not given or received any unauthorized assistance on the assignment
 # Link here:
 
-from time import time_ns, process_time_ns, thread_time_ns
+from time import time_ns
 from statistics import mean
-from random import random
 
 class WarAndPeacePseudoRandomNumberGenerator():
 
     def __init__(self, seedValue=None):
 
         self.seedValue = seedValue
-        # self.fileString = self.getLines()
 
     def getSeedValue(self):
 
@@ -28,10 +26,10 @@ class WarAndPeacePseudoRandomNumberGenerator():
 
     def doSomeLCGMath(self, seed):
 
-        a = 789
-        c = 31231231
-        m = 100000
-        return (a*seed + c)//m
+        a = 1
+        c = 3123
+        m = 999999
+        return (a*seed + c) % m
 
     def random(self):
         value = self.getSeedValue()
@@ -75,26 +73,31 @@ class WarAndPeacePseudoRandomNumberGenerator():
             return None
 
 
-    # def getLines(self):
-    #     filepath = "resources/war-and-peace.txt"
-    #     fileString = ""
-    #     with open(filepath, "r") as file:
-    #         lines = file.readlines()
-    #     for line in lines:
-    #         fileString += line.rstrip()
-    #     fileString = fileString.replace(" ", "")
-    #     # print(fileString)
-    #     return fileString
+    def getLines(self):
+        filepath = "resources/war-and-peace.txt"
+        fileString = ""
+        with open(filepath, "r") as file:
+            lines = file.readlines()
+        for line in lines:
+            fileString += line.rstrip()
+        fileString = fileString.replace(" ", "")
+        # print(fileString)
+        return fileString
 
     def getCharacter(self, file, value):
         a = " "
+        b = None
 
         while a.isspace():
             file.seek(value)
             a = file.read(1)
             value += 1
+            try:
+                b = a.decode("ascii")
+            except UnicodeError:
+                a = " "
 
-        return a.decode("utf-8")
+        return b
 
     def openFile(self):
         filepath = "resources/war-and-peace.txt"
@@ -114,6 +117,7 @@ def main():
     prng2 = WarAndPeacePseudoRandomNumberGenerator(1234)
     a = prng2.random()
     b = prng2.random()
+
     # c = prng2.getCharacter(1234)
     # print(c)
 
