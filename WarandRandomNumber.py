@@ -1,14 +1,19 @@
 # William Fidler
-# 02/22/20
-# Dice and Cups
+# 02/26/20
+# War and Random Number
 # "I have not given or received any unauthorized assistance on the assignment
-# Link here:
+# Link here:https://youtu.be/TympaY-sb6E
 
 from time import time_ns
 from statistics import mean
 
 
 class WarAndPeacePseudoRandomNumberGenerator():
+    """
+    Random number generator
+    Every instance will open a new File, so it's important to close explicitly
+    using closeFile function
+    """
     filepath = "resources/war-and-peace.txt"
 
     def __init__(self, seedValue=None):
@@ -16,7 +21,7 @@ class WarAndPeacePseudoRandomNumberGenerator():
         self.seedValue = seedValue
         self.file = self.openFile()
 
-    def getSeedValue(self):
+    def getRandomValue(self):
         """
         Returns the seed value of the class, if there is none returns last 5 digits of time
         :return:
@@ -47,18 +52,18 @@ class WarAndPeacePseudoRandomNumberGenerator():
         Calculate a random number using the text file
         :return:
         """
-        value = self.getSeedValue()
+        value = self.getRandomValue()
         binaryString = ""
 
         while len(binaryString) < 16:
             a = self.getCharacter(value)
-            i = value + self.getSeedValue()
+            i = value + self.getRandomValue()
             b = self.getCharacter(i)
             bit = self.judge(a, b)
             if bit is None:
-                value = value + self.getSeedValue()
+                value = value + self.getRandomValue()
                 continue
-            value = value + self.getSeedValue()
+            value = value + self.getRandomValue()
             binaryString += bit
 
         return self.calculateNumber(binaryString)
@@ -138,21 +143,21 @@ def main():
     prng2 = WarAndPeacePseudoRandomNumberGenerator(1234)
     a = prng2.random()
     b = prng2.random()
-    prng2.closeFile()
+    prng2.closeFile() #file must be closed explicitly here
 
     for i in range(10000):
         r = prng.random()
         list1.append(r)
 
-    prng.closeFile()
+    prng.closeFile() #file must be closed explicitly
     median = mean(list1)
     minimum = min(list1)
     maximum = max(list1)
 
-    print(median)
-    print(minimum)
-    print(maximum)
-    print(a, b)
+    print("median: {} ".format(median))
+    print("minimum: {} ".format(minimum))
+    print("maximum: {} ".format(maximum))
+    print("With seed 1234: {} {}".format(a, b))
 
 
 if __name__ == '__main__':

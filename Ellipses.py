@@ -1,8 +1,9 @@
 # William Fidler
-# 02/22/20
+# 02/26/20
 # Ellipses
 # "I have not given or received any unauthorized assistance on the assignment
-# Link here:
+# Link here: https://youtu.be/smkG3GcuCH0
+
 import math
 from time import time_ns
 
@@ -169,13 +170,12 @@ class Box():
     """
     Represents a Box with two ellipses in it
     """
-    #random number generator for every Box
-    rando = WarAndPeacePseudoRandomNumberGenerator()
 
     def __init__(self, ellipse1, ellipse2):
         self.ellipse1 = ellipse1
         self.ellipse2 = ellipse2
         self.calculateBox()
+        self.rando = WarAndPeacePseudoRandomNumberGenerator() #random number generator for every Box
 
     def calculateBox(self):
         """
@@ -275,13 +275,24 @@ def main():
     p2 = Point(0,0)
     p3 = Point(0,0)
     p4 = Point(0,0)
-
     el1 = Ellipse(p1, p2, 2)
     el2 = Ellipse(p3, p4, 4)
 
     overlap = computeOverlapOfEllipse(el1, el2)
 
     print(overlap)
+
+    # #For demo purposes
+    #
+    # p1 = Point(2, 3)
+    # p2 = Point(3, 4)
+    # p3 = Point(2, 2)
+    # p4 = Point(3, 5)
+    # el1 = Ellipse(p1, p2, 4)
+    # el2 = Ellipse(p3, p4, 6)
+    # overlap = computeOverlapOfEllipse(el1, el2)
+    #
+    # print(overlap)
 
 
 

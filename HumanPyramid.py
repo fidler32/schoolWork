@@ -11,13 +11,12 @@ def humanPyramid(row, column):
     :param column: int
     :return: int
     """
-
     if row == 0: #top row doesn't have weight
         return 0
     if row == 1: #nodes in row 1 will always have half the weight of the top row
         return 128/2
     if column == 0 or column == row: #edges are always 128/2 plus the weight of the node "above" it
-        return 128/2 + humanPyramid(row -1, 0)
+        return humanPyramid(row -1, 0)
 
     #weight is equal to the sum of the nodes above pointing to target node
     return humanPyramid(row-1, column//2) + humanPyramid(row-1, (column//2)+1)
